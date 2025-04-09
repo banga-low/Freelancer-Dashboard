@@ -1,12 +1,15 @@
 import { 
   Box, VStack, Link, Icon, Text, 
-  Flex, Avatar, useColorModeValue 
+  Flex, Avatar, useColorModeValue,
+  useDisclosure, Drawer,
+  DrawerOverlay, DrawerContent, DrawerCloseButton,
+  DrawerBody
 } from '@chakra-ui/react';
 import { 
   FiHome, FiBriefcase, FiDollarSign, 
   FiUsers 
 } from 'react-icons/fi';
-
+ 
 const IconWrapper = ({ icon, color }) => {
   const borderColor = {
     blue: 'blue.300',
@@ -46,6 +49,7 @@ const IconWrapper = ({ icon, color }) => {
   );
 };
 
+ 
 function NavLink({ icon, label, isActive, onClick, color }) {
   const activeBg = useColorModeValue(`${color}.50`, `${color}.800`);
   const activeColor = useColorModeValue(`${color}.600`, `${color}.200`);
@@ -67,11 +71,16 @@ function NavLink({ icon, label, isActive, onClick, color }) {
   );
 }
 
+ 
 export default function Sidebar({ activeView, setActiveView }) {
   const sidebarBg = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
+  
+   
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  return (
+   
+  const SidebarContent = () => (
     <Box 
       w="250px" 
       h="100vh" 
@@ -115,11 +124,35 @@ export default function Sidebar({ activeView, setActiveView }) {
             icon={item.icon}
             label={item.label}
             isActive={activeView === item.view}
-            onClick={() => setActiveView(item.view)}
+            onClick={() => {
+              setActiveView(item.view);
+              onClose();  
+            }}
             color={item.color}
           />
         ))}
       </VStack>
     </Box>
+  );
+
+   
+  return (
+    <>
+      {/* Desktop Sidebar - shows on medium screens and up */}
+      <Box display={{ base: 'none', md: 'block' }}>
+        <SidebarContent />
+      </Box>
+
+      {/* Mobile Drawer - shows on small screens */}
+      <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
+        <DrawerOverlay />
+        <DrawerContent maxW="xs">
+          <DrawerCloseButton />
+          <DrawerBody p={0}>
+            <SidebarContent />
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </>
   );
 }

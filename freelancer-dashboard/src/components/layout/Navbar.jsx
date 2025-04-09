@@ -1,9 +1,9 @@
 import { Avatar } from '@chakra-ui/react';
-import { Flex, Heading, Spacer, Button, useColorMode, IconButton } from '@chakra-ui/react';
+import { Flex, Heading, Spacer, Button, useColorMode, IconButton, useDisclosure } from '@chakra-ui/react';
 import { SunIcon, MoonIcon } from '@chakra-ui/icons';
-import { BellIcon } from '@chakra-ui/icons';
+import { BellIcon, HamburgerIcon } from '@chakra-ui/icons';
 
-export default function Navbar() {
+export default function Navbar({ onOpen }) {  
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
@@ -12,7 +12,20 @@ export default function Navbar() {
       p={4} 
       bg={colorMode === 'light' ? 'white' : 'gray.800'}
       boxShadow="sm"
+      position="sticky"
+      top="0"
+      zIndex="sticky"
     >
+      {/*  mobile menu button */}
+      <IconButton
+        icon={<HamburgerIcon />}
+        aria-label="Open menu"
+        onClick={onOpen}
+        variant="outline"
+        display={{ base: 'flex', md: 'none' }}
+        mr={2}
+      />
+      
       <Heading size="md">FreelanceHub</Heading>
       
       <Spacer />
