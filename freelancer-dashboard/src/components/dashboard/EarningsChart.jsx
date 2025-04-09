@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardBody, Text } from '@chakra-ui/react';
 import { lazy, Suspense } from 'react';
 
-// Vite-compatible dynamic import
+ 
 const Chart = lazy(() => import('react-apexcharts'));
 
 const options = {
